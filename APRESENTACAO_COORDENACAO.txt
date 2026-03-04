@@ -1,0 +1,45 @@
+PROJETO: ROLETA SOLIDARIA
+DOCUMENTO DE APRESENTACAO PARA COORDENACAO
+
+1. OBJETIVO DO PROJETO
+O projeto Roleta Solidaria foi desenvolvido para organizar, digitalizar e dar transparencia a uma campanha promocional de incentivo, com foco em participacao, controle e confiabilidade.
+Por meio de codigos unicos validados no sistema, cada participante tem direito a um unico giro na roleta, garantindo igualdade de oportunidade e evitando duplicidades.
+
+2. PROBLEMA QUE O PROJETO RESOLVE
+- Falta de controle manual sobre codigos e premiacoes.
+- Risco de uso repetido do mesmo codigo.
+- Dificuldade de rastrear quem ganhou, quando ganhou e se o premio foi pago.
+- Ausencia de um fluxo auditavel para coordenacao e equipe responsavel.
+
+3. SOLUCAO IMPLEMENTADA
+O sistema entrega um fluxo completo:
+- Gera 500 codigos unicos com regra valida (5 caracteres, 2 letras e 3 numeros).
+- Valida o codigo informado pelo participante.
+- Libera a roleta somente para codigos validos e nao utilizados.
+- Registra cada giro com posicao, resultado e horario.
+- Permite definir antecipadamente, no banco de dados, quais posicoes de giro serao premiadas.
+- Possui painel administrativo protegido por codigo de acesso.
+- Disponibiliza consulta por codigo e botao para marcar "premio pago".
+
+4. MODELO DE PREMIACAO CONTROLADA
+Foram definidos 50 premios totais, distribuidos de forma planejada:
+- 4 premios de R$ 50,00
+- 5 premios de R$ 20,00
+- 10 premios de R$ 10,00
+- 20 premios de R$ 5,00
+- 11 premios de R$ 2,00
+
+Esse modelo garante previsibilidade financeira, controle da campanha e liberdade da coordenacao para decidir em quais posicoes os premios serao liberados.
+
+5. BENEFICIOS PARA A COORDENACAO
+- Transparencia: cada giro fica registrado e consultavel.
+- Seguranca: cada codigo so pode ser usado uma vez.
+- Governanca: controle centralizado de premiacao e pagamento.
+- Agilidade operacional: reducao de erros e retrabalho da equipe.
+- Credibilidade institucional: processo claro para participantes e gestores.
+
+6. RESULTADO ESPERADO
+Com o Roleta Solidaria, a coordenacao passa a ter um processo moderno, auditavel e escalavel para campanhas promocionais, unindo engajamento do publico com responsabilidade na gestao dos premios.
+
+Em resumo, o projeto nao e apenas uma roleta: e uma plataforma de controle, transparencia e confianca para execucao de acoes solidarias com alto padrao de organizacao.
+

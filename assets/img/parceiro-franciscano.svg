@@ -1,0 +1,22 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="petalA" x1="36" y1="74" x2="190" y2="284" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF5F45"/>
+      <stop offset="1" stop-color="#F0B08B"/>
+    </linearGradient>
+    <radialGradient id="petalB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(218 124) rotate(90) scale(110 108)">
+      <stop stop-color="#FDECDD"/>
+      <stop offset="1" stop-color="#F54E39"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="360" rx="36" fill="#F4F2F1"/>
+  <path d="M56 206C70 126 118 92 194 86C168 144 168 202 194 262C118 258 74 236 56 206Z" fill="url(#petalA)"/>
+  <path d="M214 74C286 74 344 130 344 200C344 270 286 326 214 326C142 326 84 270 84 200C84 130 142 74 214 74Z" fill="url(#petalB)"/>
+  <path d="M120 28H230C246 28 258 40 258 56V74H92V56C92 40 104 28 120 28Z" fill="#62211E"/>
+  <path d="M140 84C167 138 168 210 146 270L116 278C118 214 114 142 128 84H140Z" fill="#66211F"/>
+  <path d="M76 202L178 302L236 246L130 136L76 202Z" fill="#F4A47E"/>
+  <path d="M324 200C324 260 274 308 214 308C154 308 106 260 106 200C106 140 154 92 214 92C274 92 324 140 324 200Z" stroke="white" stroke-width="6" fill="none"/>
+  <path d="M168 92C148 134 148 266 170 308" stroke="white" stroke-width="6" fill="none"/>
+  <text x="392" y="152" fill="#D63D3B" font-family="Georgia, 'Times New Roman', serif" font-size="74">Colégio Franciscano</text>
+  <text x="392" y="252" fill="#4F171C" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="700">Santa Maria dos Anjos</text>
+</svg>
