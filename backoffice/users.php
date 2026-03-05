@@ -11,10 +11,13 @@ use App\Models\AdminUser;
 
 (new Authenticate($app['session'], $app['auth']))->handle();
 
-$controller = new UsersController(new AdminUser(), $app['auth'], $app['auditLogger'], $app['csrf']);
+$controller = new UsersController(new AdminUser(), $app['permissions'], $app['auth'], $app['auditLogger'], $app['csrf']);
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    (new Authorize($app['auth'], $app['permissions'], 'users.manage'))->handle();
+    $action = (string) ($_POST['action'] ?? '');
+    $requiredPermission = $action === 'permissions_update' ? 'permissions.manage' : 'users.manage';
+
+    (new Authorize($app['auth'], $app['permissions'], $requiredPermission))->handle();
     (new VerifyCsrf($app['csrf']))->handle();
     $controller->handlePost();
     return;

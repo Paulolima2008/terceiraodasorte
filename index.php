@@ -33,7 +33,7 @@ try {
         if (!isValidCodeFormat($submittedCode)) {
             $error = 'Formato invalido. Informe um codigo com 5 caracteres, 2 letras e 3 numeros.';
         } else {
-            $stmt = $pdo->prepare('SELECT id, is_used FROM codes WHERE code = :code LIMIT 1');
+            $stmt = $pdo->prepare('SELECT id, campaign_id, is_used FROM campaign_vouchers WHERE code = :code LIMIT 1');
             $stmt->execute(['code' => $submittedCode]);
             $row = $stmt->fetch();
 
@@ -43,6 +43,7 @@ try {
                 $error = 'Esse codigo ja foi utilizado.';
             } else {
                 $_SESSION['validated_code'] = $submittedCode;
+                $_SESSION['validated_campaign_id'] = (int) ($row['campaign_id'] ?? 0);
                 header('Location: ' . BASE_URL . '/spin.php');
                 exit;
             }

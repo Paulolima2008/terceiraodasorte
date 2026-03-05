@@ -59,6 +59,20 @@ function segmentIndexesForLabel(string $label): array
         return $indexes;
     }
 
+    // For dynamic campaign labels, keep winner spins in winner slices instead of "Tente novamente".
+    if ($label !== 'Tente novamente') {
+        $winnerFallback = [];
+        foreach ($segments as $index => $segmentLabel) {
+            if ($segmentLabel !== 'Tente novamente') {
+                $winnerFallback[] = $index;
+            }
+        }
+
+        if ($winnerFallback !== []) {
+            return $winnerFallback;
+        }
+    }
+
     $fallback = [];
     foreach ($segments as $index => $segmentLabel) {
         if ($segmentLabel === 'Tente novamente') {

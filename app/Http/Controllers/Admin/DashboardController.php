@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Core\Controller;
+use App\Models\RouletteOperation;
 use App\Services\AuthService;
 use App\Services\CsrfService;
 use App\Services\DashboardService;
@@ -23,7 +24,8 @@ final class DashboardController extends Controller
 
     public function index(): void
     {
-        $metrics = $this->dashboard->metrics();
+        $campaignId = (new RouletteOperation())->resolveCampaignId((int) ($_GET['campaign_id'] ?? 0));
+        $metrics = $this->dashboard->metrics($campaignId);
 
         $this->render('admin.dashboard.index', [
             'pageTitle' => 'Dashboard',
@@ -32,11 +34,13 @@ final class DashboardController extends Controller
             'flash' => \getFlash(),
             'csrf' => $this->csrf,
             'metrics' => $metrics,
+            'campaignId' => $campaignId,
         ]);
     }
 
     public function metricsApi(): never
     {
-        $this->json($this->dashboard->metrics());
+        $campaignId = (new RouletteOperation())->resolveCampaignId((int) ($_GET['campaign_id'] ?? 0));
+        $this->json($this->dashboard->metrics($campaignId));
     }
 }

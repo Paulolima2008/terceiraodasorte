@@ -16,6 +16,7 @@ Esta base cria um painel administrativo moderno em paralelo ao admin legado, pre
 
 - `backoffice/index.php`: login
 - `backoffice/dashboard.php`: dashboard principal
+- `backoffice/operations.php`: operações da roleta (consulta, agenda e pagamento de prêmios)
 - `backoffice/users.php`: CRUD de usuários
 - `backoffice/permissions.php`: matriz de permissões
 - `backoffice/logs.php`: auditoria

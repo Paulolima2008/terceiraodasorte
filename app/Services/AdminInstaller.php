@@ -19,6 +19,8 @@ final class AdminInstaller
     {
         $this->createTables();
         $this->seedPermissions();
+        $this->cleanupDeprecatedPermissions();
+        $this->grantBusinessPermissionsToManagers();
         $this->seedAdminUser();
     }
 
@@ -100,13 +102,20 @@ final class AdminInstaller
     {
         $permissions = [
             ['dashboard', 'dashboard.view', 'Visualizar dashboard'],
-            ['users', 'users.view', 'Visualizar usuários'],
-            ['users', 'users.manage', 'Gerenciar usuários'],
-            ['permissions', 'permissions.view', 'Visualizar permissões'],
-            ['permissions', 'permissions.manage', 'Gerenciar permissões'],
+            ['campaigns', 'campaigns.view', 'Visualizar campanhas'],
+            ['campaigns', 'campaigns.manage', 'Gerenciar campanhas'],
+            ['operations', 'operations.view', 'Visualizar operacoes da roleta'],
+            ['operations', 'operations.manage', 'Gerenciar operacoes da roleta'],
+            ['vouchers', 'vouchers.view', 'Visualizar vouchers'],
+            ['payments', 'payments.view', 'Visualizar pagamentos'],
+            ['payments', 'payments.manage', 'Gerenciar pagamentos'],
+            ['reports', 'reports.view', 'Visualizar relatorios'],
+            ['users', 'users.view', 'Visualizar usuarios'],
+            ['users', 'users.manage', 'Gerenciar usuarios'],
+            ['permissions', 'permissions.view', 'Visualizar permissoes'],
+            ['permissions', 'permissions.manage', 'Gerenciar permissoes'],
             ['logs', 'logs.view', 'Visualizar logs'],
-            ['settings', 'settings.manage', 'Gerenciar configurações'],
-            ['profile', 'profile.manage', 'Gerenciar perfil'],
+            ['settings', 'settings.manage', 'Gerenciar configuracoes'],
         ];
 
         $stmt = $this->pdo->prepare(
@@ -121,6 +130,80 @@ final class AdminInstaller
                 'permission_key' => $permissionKey,
                 'permission_label' => $permissionLabel,
             ]);
+        }
+    }
+
+    private function cleanupDeprecatedPermissions(): void
+    {
+        $deprecatedPermissionKeys = [
+            'profile.manage',
+        ];
+
+        $stmt = $this->pdo->prepare(
+            'DELETE FROM admin_permissions
+             WHERE permission_key = :permission_key'
+        );
+
+        foreach ($deprecatedPermissionKeys as $permissionKey) {
+            $stmt->execute(['permission_key' => $permissionKey]);
+        }
+    }
+
+    private function grantBusinessPermissionsToManagers(): void
+    {
+        $permissionKeys = [
+            'campaigns.view',
+            'campaigns.manage',
+            'operations.view',
+            'operations.manage',
+            'vouchers.view',
+            'payments.view',
+            'payments.manage',
+            'reports.view',
+        ];
+
+        $permissionIdStmt = $this->pdo->prepare(
+            'SELECT id FROM admin_permissions WHERE permission_key = :permission_key LIMIT 1'
+        );
+
+        $permissionIds = [];
+        foreach ($permissionKeys as $permissionKey) {
+            $permissionIdStmt->execute(['permission_key' => $permissionKey]);
+            $permissionId = (int) $permissionIdStmt->fetchColumn();
+            if ($permissionId > 0) {
+                $permissionIds[] = $permissionId;
+            }
+        }
+
+        if ($permissionIds === []) {
+            return;
+        }
+
+        $managerStmt = $this->pdo->prepare(
+            'SELECT DISTINCT up.admin_user_id
+             FROM admin_user_permissions up
+             INNER JOIN admin_permissions p ON p.id = up.permission_id
+             WHERE p.permission_key = :permission_key'
+        );
+        $managerStmt->execute(['permission_key' => 'permissions.manage']);
+        $managerIds = array_map('intval', $managerStmt->fetchAll(PDO::FETCH_COLUMN));
+
+        if ($managerIds === []) {
+            return;
+        }
+
+        $insert = $this->pdo->prepare(
+            'INSERT IGNORE INTO admin_user_permissions (admin_user_id, permission_id, created_at)
+             VALUES (:admin_user_id, :permission_id, NOW())'
+        );
+
+        foreach ($managerIds as $adminUserId) {
+            foreach ($permissionIds as $permissionId) {
+                $insert->execute([
+                    'admin_user_id' => $adminUserId,
+                    'permission_id' => $permissionId,
+                ]);
+            }
         }
     }
 
